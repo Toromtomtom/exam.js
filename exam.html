@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script>
+			<!-- Hier Start- und Endzeit der Prüfung einstellen. JavaScript zählt Monate ab 0: Januar ist 0, Dezember ist 11. -->
+			var begin = new Date(2021, 00, 01, 09, 00); <!-- Jahr, Monat, Tag, Stunde, Minute -->
+			var end   = new Date(2021, 00, 01, 11, 00); <!-- Jahr, Monat, Tag, Stunde, Minute -->
+
+			var formatter = new Intl.DateTimeFormat('de-de', { hour: 'numeric', minute: 'numeric'});
+			function start() {
+				setInterval(updateTimer, 1000);
+				setInterval(updateProgressBar, 1000);
+				document.getElementById('begin').innerHTML = formatter.format(begin);
+				document.getElementById('end').innerHTML = formatter.format(end);
+			}
+			function updateTimer() {
+				var today = formatter.format(new Date());
+				document.getElementById('timer').innerHTML = today;
+			}
+			function updateProgressBar() {
+				var now = new Date();
+				var progress = (now - begin) / (end - begin);
+				var progress = Math.max(0, progress);
+				var progress = Math.min(1, progress);
+				var progressPercent = progress * 100;
+				document.getElementById('progressBar').style.width = progressPercent + '%';
+			}
+			function restroomClicked() {
+				var status = document.getElementById('restroomStatus');
+				if(document.getElementById('restroom').checked == true) {
+					status.innerHTML = "Die Toilette ist <span style='color:red'>belegt</span>.";
+				} else {
+					status.innerHTML = "Die Toilette ist frei.";
+				}
+			}
+		</script>
+	</head>
+
+	<body onload="start()">
+
+		<!-- Hier Name der Prüfung eintragen -->
+		<h3 style="text-align:center">Klausur XYZ</h3>
+		
+		<div style="width:100%; background-color:grey" id="progressBarBackground">
+			<div style="width:0%; height:30px;background-color:blue" id="progressBar"></div>
+		</div>
+
+		<span style="display:inline-block; text-align:left; width:33%" id="begin"></span><span style="display:inline-block; text-align:center; width:33%" id="timer"></span><span style="display:inline-block; text-align:right; width:33%" id="end"></span>
+
+		<!-- Hier Liste von Regeln eintragen -->
+		<ul>
+			<li>Regel 1</li>
+			<li>Regel 2</li>
+			<li>Regel 3</li>
+		</ul>
+
+		<input type="checkbox" id="restroom" onclick="restroomClicked()">
+		<label for="restRoom" id="restroomStatus">Die Toilette ist frei.</label>
+	</body>
+</html>
+
